@@ -3,6 +3,8 @@
 class: CommandLineTool
 
 description: |
+Sort alignments by leftmost coordinates.
+
   Usage: samtools index [-bc] [-m INT] <in.bam> [out.index]
   Options:
     -b       Generate BAI-format index for BAM files [default]
@@ -72,7 +74,7 @@ outputs:
             return $job['input'].path.split('/').slice(-1)[0]+ext;
           }
 
-baseCommand: ["samtools", "index"]
+baseCommand: ["samtools", "sort"]
 
 arguments:
   - valueFrom:
