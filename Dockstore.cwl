@@ -4,7 +4,67 @@
 
 class: CommandLineTool
 
-description: |
+dct:contributor:
+  foaf:name: Andy Yang
+  foaf:mbox: mailto:ayang@oicr.on.ca
+dct:creator:
+  '@id': http://orcid.org/0000-0001-9102-5681
+  foaf:name: Andrey Kartashov
+  foaf:mbox: mailto:Andrey.Kartashov@cchmc.org
+dct:description: 'Developed at Cincinnati Children’s Hospital Medical Center for the
+  CWL consortium http://commonwl.org/ Original URL: https://github.com/common-workflow-language/workflows'
+cwlVersion: v1.0
+
+
+requirements:
+- class: DockerRequirement
+  dockerPull: quay.io/cancercollaboratory/dockstore-tool-samtools-sort
+inputs:
+  compression_level:
+    type: int?
+    inputBinding:
+      prefix: -l
+    doc: |
+      Set compression level, from 0 (uncompressed) to 9 (best)
+  threads:
+    type: int?
+    inputBinding:
+      prefix: -@
+
+    doc: Set number of sorting and compression threads [1]
+  memory:
+    type: string?
+    inputBinding:
+      prefix: -m
+    doc: |
+      Set maximum memory per thread; suffix K/M/G recognized [768M]
+  input:
+    type: File
+    inputBinding:
+      position: 1
+
+    doc: Input bam file.
+  output_name:
+    type: string
+    inputBinding:
+      position: 2
+      prefix: -o
+
+    doc: Desired output filename.
+  sort_by_name:
+    type: boolean?
+    inputBinding:
+      prefix: -n
+
+    doc: Sort by read names (i.e., the QNAME field) rather than by chromosomal coordinates.
+outputs:
+  output_file:
+    type: File
+    outputBinding:
+      glob: $(inputs.output_name)
+
+baseCommand: [samtools, sort]
+doc: |
   Sort alignments by leftmost coordinates, or by read name when -n is used. An appropriate @HD-SO sort order header tag will be added or an existing one updated if necessary.
 
   Usage: samtools sort [-l level] [-m maxMem] [-o out.bam] [-O format] [-n] -T out.prefix [-@ threads] [in.bam]
@@ -34,71 +94,4 @@ description: |
 
   -@ INT
   Set number of sorting and compression threads. By default, operation is single-threaded
-
-dct:contributor:
-  foaf:name: Andy Yang
-  foaf:mbox: "mailto:ayang@oicr.on.ca"
-
-dct:creator:
-  "@id": "http://orcid.org/0000-0001-9102-5681"
-  foaf:name: "Andrey Kartashov"
-  foaf:mbox: "mailto:Andrey.Kartashov@cchmc.org"
-
-dct:description: "Developed at Cincinnati Children’s Hospital Medical Center for the CWL consortium http://commonwl.org/ Original URL: https://github.com/common-workflow-language/workflows"
-
-cwlVersion: draft-3
-
-
-requirements:
-  - class: DockerRequirement
-    dockerPull: "quay.io/cancercollaboratory/dockstore-tool-samtools-sort"
-
-inputs:
-  - id: "#compression_level"
-    type: ["null", int]
-    description: |
-      Set compression level, from 0 (uncompressed) to 9 (best)
-    inputBinding:
-      prefix: "-l"
-
-  - id: "#memory"
-    type: ["null", string]
-    description: |
-      Set maximum memory per thread; suffix K/M/G recognized [768M]
-    inputBinding:
-      prefix: "-m"
-
-  - id: "#sort_by_name"
-    type: ["null", boolean]
-    description: "Sort by read names (i.e., the QNAME field) rather than by chromosomal coordinates."
-    inputBinding:
-      prefix: -n
-
-  - id: "#threads"
-    type: ["null", int]
-    description: "Set number of sorting and compression threads [1]"
-    inputBinding:
-      prefix: -@
-
-  - id: "#output_name"
-    type: string
-    description: "Desired output filename."
-    inputBinding:
-      position: 2
-      prefix: -o
-
-  - id: "#input"
-    type: File
-    description:
-      Input bam file.
-    inputBinding:
-      position: 1
-
-outputs:
-  - id: "#output_file"
-    type: File
-    outputBinding:
-      glob: $(inputs.output_name)
-
-baseCommand: ["samtools", "sort"]
 
