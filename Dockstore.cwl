@@ -46,11 +46,12 @@ dct:creator:
 
 dct:description: "Developed at Cincinnati Children’s Hospital Medical Center for the CWL consortium http://commonwl.org/ Original URL: https://github.com/common-workflow-language/workflows"
 
+cwlVersion: draft-3
+
 
 requirements:
   - class: DockerRequirement
     dockerPull: "quay.io/cancercollaboratory/dockstore-tool-samtools-sort"
-  - { import: node-engine.cwl }
 
 inputs:
   - id: "#compression_level"
@@ -84,6 +85,7 @@ inputs:
     description: "Desired output filename."
     inputBinding:
       position: 2
+      prefix: -o
 
   - id: "#input"
     type: File
@@ -96,12 +98,7 @@ outputs:
   - id: "#output_file"
     type: File
     outputBinding:
-      glob:
-        engine: "cwl:JsonPointer"
-        script: "job/output_name"
+      glob: $(inputs.output_name)
 
 baseCommand: ["samtools", "sort"]
-
-arguments:
-  - "-f"
 

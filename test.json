@@ -1,0 +1,11 @@
+{
+  "output_name": "out.bam",
+  "input": {
+    "path": "rna.SRR948778.bam",
+    "class": "File"
+  },
+  "output_file": {
+    "path": "out.bam",
+    "class": "File"
+  }
+}
