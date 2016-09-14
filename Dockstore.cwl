@@ -18,7 +18,7 @@ cwlVersion: v1.0
 
 requirements:
 - class: DockerRequirement
-  dockerPull: quay.io/cancercollaboratory/dockstore-tool-samtools-sort
+  dockerPull: quay.io/cancercollaboratory/dockstore-tool-samtools-sort:1.0
 inputs:
   compression_level:
     type: int?
